@@ -3,15 +3,15 @@ package connect4;
 public class ComputerPlayer extends Player
 {
     static Logic testLogic = new Logic();
-    static int computerPlayerCoins;
-    static int humanPlayerCoins;
-    static int bidAmount;
-    static int computerMovesToWin;
-    static int humanMovesToWin;
-    static int nextMove = 1;
+    static int computerPlayerCoins; //not currently used
+    static int humanPlayerCoins; //not currently used
+    static int bidAmount; //not currently used
+    static int computerMovesToWin; //not currently used
+    static int humanMovesToWin; //not currently used
+    static int nextMove = 1; //next move to play. right now it is always in column 1
     static int nextBid = 100;// testing purposes
     
-    
+   
     public static int humanPlayerCoins()
     {
         humanPlayerCoins = testLogic.getYellowCoins();
@@ -23,17 +23,21 @@ public class ComputerPlayer extends Player
         computerPlayerCoins = testLogic.getRedCoins();
         return computerPlayerCoins;
     }
-    
+    /**
+    *sets value of next Bid to the value of nextBid in this computerPlayer Class
+    */
     public void setNextBid()
     {
         testLogic.setNextRedBid(nextBid);
     }
-    
+    /**
+    *sets value of next move to the value of nextBid in this computerPlayer Class
+    */
     public void setNextMove()
     {
         testLogic.setNextRedMove(nextMove);
     }
-    
+    //dont worry about this method
     public static int bidAmount()
     {
         if((computerMovesToWin == 1) && (computerPlayerCoins() > humanPlayerCoins()))
