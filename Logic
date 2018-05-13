@@ -5,40 +5,44 @@ import java.util.Scanner;
 
 public class Logic
 {
-    public int yellow = 0;
+    public int yellow = 0; //if the yellow player bids more, this will allow them to play the next move
 
-    public int red = 1;
+    public int red = 1; //if the red player bids more, this will allow them to play the next move
 
-    public int tie = 2;
+    public int tie = 2; //if there is a tie
 
-    public int yellowCoins = 100;
+    public int yellowCoins = 100; //not currently used
 
-    public int redCoins = 100;
+    public int redCoins = 100; //not currently used
 
-    private int nextRedBid;
-    private int nextRedMove;
+    private int nextRedBid; //supposed to store the value of the AI's bid from the ComputerPlayer class
+    private int nextRedMove; //supposed to store the next move of the AI from the computerPlayer class
 
-
+    /**
+    *sets the next red Bid to the one from the computer player(idk what this does)
+    */
     public void setNextRedBid( int nextBid )
     {
         nextRedBid = nextBid;
     }
-
+    /**
+    *sets the next red move to the one from the computer player(idk what this does)
+    */
     public void setNextRedMove( int nextMove )
     {
         nextRedMove = nextMove;
     }
-
+    // dont worry about this one
     public int setRedCoins( int subtract )
     {
         return red;
     }
-
+    //idk what this is for(who wrote this
     public int getRedCoins()
     {
         return redCoins;
     }
-
+    //idk what this is for
     public int getYellowCoins()
     {
         return yellowCoins;
@@ -82,7 +86,7 @@ public class Logic
         }
     }
 
-
+    //next player should get the nextRedBid from the value of the field. Then it will compare it as usual
     public int getNextPlayer()
     {
 //         System.out.println("How much to bid(red): ");
@@ -126,7 +130,7 @@ public class Logic
 
     }
 
-
+    //currently not in use, the connectfour class uses the dropRedPatternAI
     public void dropRedPattern( String[][] grid )
     {
         System.out.println( "Drop a red token in column (0 -6): " );
@@ -146,7 +150,7 @@ public class Logic
         }
 
     }
-
+    //currently this works, it gets the value from the ComputerPlayer class and if red wins the bid, it will play the move it got
     public void dropRedPatternAI( String[][] grid )
     {
         int changeToOdd = ( 2 * nextRedMove ) + 1;
