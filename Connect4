@@ -20,7 +20,7 @@ public static void main (String[] args)
       
       if(playerTurn == red)
       {
-          logic.dropRedPatternAI(grid);
+          logic.dropRedPatternAI(grid); //changed this to USE THE AI's next move
           System.out.println( "Yellow has " + Integer.valueOf(logic.getYellowCoins()) + " coins left");
           System.out.println( "Red has " + Integer.valueOf(logic.getRedCoins()) + " coins left");
       } 
