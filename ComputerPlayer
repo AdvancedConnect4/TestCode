@@ -2,34 +2,36 @@ package connect4;
 
 public class ComputerPlayer extends Player
 {
-    static Logic test = new Logic();
+    static Logic testLogic = new Logic();
     static int computerPlayerCoins;
     static int humanPlayerCoins;
     static int bidAmount;
     static int computerMovesToWin;
     static int humanMovesToWin;
-    static int nextMove;
-    static int nextBid = 1;// testing purposes
+    static int nextMove = 1;
+    static int nextBid = 100;// testing purposes
+    
     
     public static int humanPlayerCoins()
     {
-        humanPlayerCoins = test.getYellowCoins();
+        humanPlayerCoins = testLogic.getYellowCoins();
         return humanPlayerCoins;
     }
     
     public static int computerPlayerCoins()
     {
-        computerPlayerCoins = test.getRedCoins();
+        computerPlayerCoins = testLogic.getRedCoins();
         return computerPlayerCoins;
     }
+    
     public void setNextBid()
     {
-        test.setNextRedBid(nextBid);
+        testLogic.setNextRedBid(nextBid);
     }
     
     public void setNextMove()
     {
-        test.setNextRedMove(nextMove);
+        testLogic.setNextRedMove(nextMove);
     }
     
     public static int bidAmount()
@@ -80,6 +82,7 @@ public class ComputerPlayer extends Player
     
     public int computerMovesToWin()
     {
+        
         return computerMovesToWin;
     }
     
