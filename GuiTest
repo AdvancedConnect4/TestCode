@@ -1,0 +1,18 @@
+import javax.swing.*;
+
+public class Connect4GuiTest {
+
+    public static void main(String[] args) {
+   
+    final String[] arguments = args;
+
+        //Schedule a job for the event-dispatching thread:
+        //creating and showing the connect4 GUI.
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+        Connect4Gui connect4GUI = new Connect4Gui(arguments);
+        connect4GUI.displayConnect4Gui();
+            }
+        });
+    }
+}
