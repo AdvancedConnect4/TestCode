@@ -8,54 +8,61 @@ public class ConnectFour
     public static int yellowCoins = 100;
     public static int redCoins = 100;
     static Logic logic = new Logic();
-    public static String[][] grid = logic.createGrid();
+    static ComputerPlayer computerPlayer = new ComputerPlayer();
+    public static String[][] grid = logic.makeGrid();
 
 
 
-public static void main (String[] args)
-{
+    public static void main (String[] args)
 
-  boolean loop = true;
-  logic.printGrid(grid);
-  while(loop)
-  {
-      int playerTurn = logic.getNextPlayer();
-      
-      if(playerTurn == red)
+    {
+      String[][] grid = logic.makeGrid();
+
+      boolean loop = true;
+
+      int count = 0;
+
+      logic.printPattern(grid);
+
+      while(loop)
+
       {
-          logic.dropRedPattern(grid);
-          System.out.println( "Yellow has " + Integer.valueOf(Logic.getYellowCoins()) + " coins left");
-          System.out.println( "Red has " + Integer.valueOf(Logic.getRedCoins()) + " coins left");
-      } 
-      else if (playerTurn == yellow) 
-      {
-         logic.dropYellowPattern(grid);
-         System.out.println( "Yellow has " + Integer.valueOf(Logic.getYellowCoins()) + " coins left");
-         System.out.println( "Red has " + Integer.valueOf(Logic.getRedCoins()) + " coins left");
-     }
-     else
-     {
-         System.out.println("There was a tie");
-         System.out.println( "Yellow has " + Integer.valueOf(Logic.getYellowCoins() ) + " coins left");
-         System.out.println( "Red has " + Integer.valueOf(Logic.getRedCoins()) + " coins left");
-     }
-     logic.printGrid(grid);
-     
-     if (logic.checkWinner(grid) != null)
-     {
-        if (logic.checkWinner(grid) == "R")
-        {
-            System.out.println("The red player won.");
-            
-        }           
-        else if (logic.checkWinner(grid)== "Y")
-        {
-            System.out.println("The yellow player won.");
-        }
-       loop = false;
+         if (count % 2 == 0) 
+         {
+             //logic.dropRedPattern(grid);
+             computerPlayer.dropRedPattern(grid);
+         }
+
+         else
+         {
+             logic.dropYellowPattern(grid);
+         }
+
+         count++;
+
+         logic.printPattern(grid);
+
+
+         if (logic.checkWinner(grid) != null)
+
+         {
+
+            if (logic.checkWinner(grid) == "R")
+
+               System.out.println("The red player won.");
+
+            else if (logic.checkWinner(grid)== "Y")
+
+              System.out.println("The yello player won.");
+
+           loop = false;
+
+      }
+
+    }
+
   }
-  }
-}
+
 
 public String[][] getGrid()
 {
