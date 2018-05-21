@@ -9,7 +9,18 @@ public class ComputerPlayer
         for (int row =0; row<6; row++) {
             for (int col =0; col<7; col++) {
                 changeToOdd = 2*col +1;
-                //Check horizontal 
+                //Check horizontal, one empty between 4 R (RR_R or R_RR) 
+                if (changeToOdd < 12  && f[row][changeToOdd] == "R" && f[row][changeToOdd+ 2] == "R")   
+                {
+                    //(RR_R)
+                    if (changeToOdd < 8 && f[row][changeToOdd+ 4] == " " && f[row][changeToOdd+6] != " " && f[row + 1][changeToOdd+4] != " ") {
+                        return changeToOdd+ 4;
+                    }
+                    else if (changeToOdd >= 2 && f[row][changeToOdd -2] == " " && f[row][changeToOdd -4] != " " && f[row + 1][changeToOdd-2] != " ") {//R_RR
+                        return changeToOdd -2;
+                    }
+                }  
+                //Check horizontal, 3 R continous(RRR_ or _RRR)
                 if (changeToOdd < 10  && f[row][changeToOdd] == "R" && f[row][changeToOdd+ 2] == "R" && f[row][changeToOdd+ 4] == "R")   
                 {
                     if (changeToOdd < 8 &&  f[row][changeToOdd+ 6] == " " && f[row + 1][changeToOdd+6] != " ") {
@@ -19,7 +30,7 @@ public class ComputerPlayer
                         return changeToOdd -2;
                     }
                 }    
-                //Check vertical
+                //Check vertical (RRR_ or _RRR)
                 if (row > 1 && f[row][changeToOdd] == "R" && f[row-1][changeToOdd] == "R" && f[row-2][changeToOdd] == "R") {
            //         System.out.println("vertical row=" + row + " changeToOdd=" + changeToOdd);
                     if (row > 2 && f[row-3][changeToOdd] == " " || f[row+1][changeToOdd] == " ") {
@@ -27,17 +38,30 @@ public class ComputerPlayer
                         return changeToOdd;                  
                     }
                 }
+                //check diagonal bottom up
+                if (changeToOdd < 10 && row > 1 && f[row][changeToOdd] == "R" && f[row-1][changeToOdd + 2] == "R" && f[row-2][changeToOdd + 4] == "R") {
+                    
+                    if (row > 3 && changeToOdd < 8 && f[row -3 ][changeToOdd + 6] == " " && f[row -2 ][changeToOdd + 6] != " ") {
+                        System.out.println("col computer=" + changeToOdd);
+                        return changeToOdd + 6;
+                    }
+                    else if (changeToOdd > 1 && f[row +1 ][changeToOdd -2] == " " && f[row + 2 ][changeToOdd - 2] != " ") {
+                        System.out.println("col computer=" + changeToOdd);
+                        return changeToOdd + 4;
+                    }
+                }                  
             }
         }        
-        return -1;
+        return -1; //player chance to play
     }
     
     public static int getComputerChoice(String[][] f)
     {
         int changeToOdd = checkIfComputerWins(f);
-    //    System.out.println("checkIfComputerWins changeToOdd="  + changeToOdd);
-        if (changeToOdd != -1)
+        if (changeToOdd != -1) {
+            System.out.println("checkIfComputerWins changeToOdd="  + changeToOdd);
             return changeToOdd;
+        }
         
         for (int row =0; row<6; row++) {
           for (int col =0; col<7; col++) {
@@ -56,14 +80,18 @@ public class ComputerPlayer
               } 
               //Check vertical
               if (row > 0 && f[row][changeToOdd] == "Y" && f[row-1][changeToOdd] == "Y") {
-        //          System.out.println("vertical row=" + row + " changeToOdd=" + changeToOdd);
+                  //System.out.println("vertical row=" + row + " changeToOdd=" + changeToOdd);
                   if (row > 1 && f[row-2][changeToOdd] == " " || f[row+1][changeToOdd] == " ") {
-          //            System.out.println("Return changeToOdd=" + changeToOdd);
+                      //System.out.println("Return changeToOdd=" + changeToOdd);
                       return changeToOdd;                  
                   }
               //    System.out.println("No vertical");
               }
-                
+              if (changeToOdd < 10 && row > 0 && 
+                      f[row][changeToOdd] == "Y" && f[row-1][changeToOdd + 2] == "Y" && f[row][changeToOdd + 4] != " " && f[row -1 ][changeToOdd + 4] != " ") {
+                  System.out.println("col computer=" + changeToOdd);
+                  return changeToOdd + 4;
+              }  
             }
         }
         //Now check for diagonal 
