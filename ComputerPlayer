@@ -1,193 +1,383 @@
 package connect4;
 
-public class ComputerPlayer extends Player
+import java.util.Scanner;
+
+public class ComputerPlayer 
 {
-    static Logic test = new Logic();
-
-    static ConnectFour connectfour = new ConnectFour();
-
-    static int computerPlayerCoins;// total coins of the
-                                   // computerPlayer-Red(constantly updated)
-
-    static int humanPlayerCoins; // total coins of humanPlayer-Yellow(constantly
-                                 // updated)
-
-    static int bidAmount; // amount to return to the logic class
-
-    static int humanMovesToWin; // how many moves it will take for the human aka
-                                // how many they have in a row right now
-
-    static int[] previousHumanBids = new int[43]; // keeps track of the previous
-                                                  // human bids in an array
-                                                  // getPreviousHumanMoves gets
-                                                  // the right move. For the
-                                                  // most recent move, use the
-                                                  // movesPlayed as the
-                                                  // parameter
-
-    static int movesPlayed = 0; // how many moves have been played(not each
-                                // player but total/2)
-    /**
-     * 
-     * Gets the previous move that the humanPlayer made. The most recent move would be movesPlayed
-     * as the parameter. Subtract from movesPlayed to get older moves.
-     * @param move
-     * @return
-     */
-    public int getPreviousHumanMoves( int move )
-    {
-        previousHumanBids = test.getHumanPlayerBids();
-        return previousHumanBids[move];
+    public static int checkIfComputerWins(String[][] f) {
+        int changeToOdd = 0;
+        for (int row =0; row<6; row++) {
+            for (int col =0; col<7; col++) {
+                changeToOdd = 2*col +1;
+                //Check horizontal 
+                if (changeToOdd < 10  && f[row][changeToOdd] == "R" && f[row][changeToOdd+ 2] == "R" && f[row][changeToOdd+ 4] == "R")   
+                {
+                    if (changeToOdd < 8 &&  f[row][changeToOdd+ 6] == " " && f[row + 1][changeToOdd+6] != " ") {
+                        return changeToOdd+ 6;
+                    }
+                    else if (changeToOdd >= 2 &&  f[row][changeToOdd -2] == " " && f[row + 1][changeToOdd-2] != " ") {
+                        return changeToOdd -2;
+                    }
+                }    
+                //Check vertical
+                if (row > 1 && f[row][changeToOdd] == "R" && f[row-1][changeToOdd] == "R" && f[row-2][changeToOdd] == "R") {
+           //         System.out.println("vertical row=" + row + " changeToOdd=" + changeToOdd);
+                    if (row > 2 && f[row-3][changeToOdd] == " " || f[row+1][changeToOdd] == " ") {
+                //        System.out.println("Return row changeToOdd=" + changeToOdd);
+                        return changeToOdd;                  
+                    }
+                }
+            }
+        }        
+        return -1;
     }
     
-//    public int getNextRedMove()
+    public static int getComputerChoice(String[][] f)
+    {
+        int changeToOdd = checkIfComputerWins(f);
+    //    System.out.println("checkIfComputerWins changeToOdd="  + changeToOdd);
+        if (changeToOdd != -1)
+            return changeToOdd;
+        
+        for (int row =0; row<6; row++) {
+          for (int col =0; col<7; col++) {
+              changeToOdd = 2*col +1;
+              //Check horizontal 
+              if (changeToOdd < 12  && f[row][changeToOdd] == "Y" && f[row][changeToOdd+ 2] == "Y")   
+              {    
+                  System.out.println("horizontal row=" + row + " changeToOdd=" + changeToOdd);
+                  if (changeToOdd < 10 &&  f[row][changeToOdd+ 4] == " " && f[row + 1][changeToOdd+4] != " ") {
+                      return changeToOdd+ 4;
+                  }
+                  else if (changeToOdd >= 2 &&  f[row][changeToOdd -2] == " " && f[row + 1][changeToOdd-2] != " ") {
+                      return changeToOdd -2;
+                  }
+              //    System.out.println("No horizontol");
+              } 
+              //Check vertical
+              if (row > 0 && f[row][changeToOdd] == "Y" && f[row-1][changeToOdd] == "Y") {
+        //          System.out.println("vertical row=" + row + " changeToOdd=" + changeToOdd);
+                  if (row > 1 && f[row-2][changeToOdd] == " " || f[row+1][changeToOdd] == " ") {
+          //            System.out.println("Return changeToOdd=" + changeToOdd);
+                      return changeToOdd;                  
+                  }
+              //    System.out.println("No vertical");
+              }
+                
+            }
+        }
+        //Now check for diagonal 
+        for (int row =0; row<6; row++) {
+            for (int col =0; col<7; col++) {
+                changeToOdd = 2*col +1;
+                //System.out.println("diagonal row=" + row + " changeToOdd=" + changeToOdd);
+                if (changeToOdd < 10 && row > 0 && 
+                        f[row][changeToOdd] == "Y" && f[row-1][changeToOdd + 2] == "Y" && f[row][changeToOdd + 4] != " " && f[row -1 ][changeToOdd + 4] != " ") {
+                    System.out.println("col computer=" + changeToOdd);
+                    return changeToOdd + 4;
+                }                  
+              }
+          }
+        int scan = (int) (Math.random() * 7);
+        return 2*scan +1;
+    }
+    
+    public static void dropRedPattern(String[][] f)
+
+    {
+      //System.out.println("Drop a red disk at column (0–6): ");
+      //Scanner scan = new Scanner (System.in);
+
+      int changeToOdd = getComputerChoice(f);
+      
+      //System.out.println("computer=" + changeToOdd);
+    //  int changeToOdd = 2*scan +1;
+     
+      for (int row =5; row>=0; row--)
+     {
+       if (f[row][changeToOdd] == " ")
+
+       {
+         f[row][changeToOdd] = "R";
+
+          break;
+
+        }
+
+
+      }
+
+    }
+    
+//    static Logic test = new Logic();
+//
+//    static ConnectFour connectfour = new ConnectFour();
+//
+//    static int computerPlayerCoins;// total coins of the
+//                                   // computerPlayer-Red(constantly updated)
+//
+//    static int humanPlayerCoins; // total coins of humanPlayer-Yellow(constantly
+//                                 // updated)
+//
+//    static int bidAmount; // amount to return to the logic class
+//
+//    static int humanMovesToWin; // how many moves it will take for the human aka
+//                                // how many they have in a row right now
+//
+//    static int[] previousHumanBids = new int[43]; // keeps track of the previous
+//                                                  // human bids in an array
+//                                                  // getPreviousHumanMoves gets
+//                                                  // the right move. For the
+//                                                  // most recent move, use the
+//                                                  // movesPlayed as the
+//                                                  // parameter
+//
+//    static int movesPlayed = 0; // how many moves have been played(not each
+//                                // player but total/2)
+//    /**
+//     * 
+//     * Gets the previous move that the humanPlayer made. The most recent move would be movesPlayed
+//     * as the parameter. Subtract from movesPlayed to get older moves.
+//     * @param move
+//     * @return
+//     */
+//   
+//    
+////    public int getNextRedMove()
+////    {
+////        return test.checkYellowVertical(connectfour.getGrid());
+////    }
+//    
+//    public int getPreviousHumanMoves( int move )
 //    {
-//        test.chec
+//        previousHumanBids = test.getHumanPlayerBids();
+//        return previousHumanBids[move];
+//        
 //    }
-    /**
-     * 
-     *This method is called to get the correct number of humanPlayerCoins. We need to constantly 
-     *call it to make sure that the humanPlayerCoins we are using is correct.
-     * @return
-     */
-    public static int humanPlayerCoins()
-    {
-        humanPlayerCoins = Logic.getYellowCoins();
-        return humanPlayerCoins;
-    }
-
-    /**
-     * 
-     * Gets the amount of coins computerPlayer has.
-     * @return
-     */
-    public static int computerPlayerCoins()
-    {
-        computerPlayerCoins = Logic.getRedCoins();
-        return computerPlayerCoins;
-    }
-
-
-    /**
-     * 
-     * This method should return the correct column that the computer should
-     * play at
-     * 
-     * @return
-     */
-    public String computerMove()
-    {
-        if ( test.checkYellowThreeInaRow( connectfour.getGrid() ) != null )
-        {
-            return test.checkYellowThreeInaRow( connectfour.getGrid() );
-        }
-        else if ( test.checkYellowTwoInaRow( connectfour.getGrid() ) != null )
-        {
-            return test.checkYellowTwoInaRow( connectfour.getGrid() );
-        }
-        else if ( movesPlayed == 0 )
-        {
-            return connectfour.getMiddlePosition();
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * 
-     * how many moves to win is based on how many we have in a row right now.
-     * @return
-     */
-    public int computerMovesToWin()
-    {
-        if ( test.checkRedThreeInaRow( connectfour.getGrid() ) != null )
-        {
-            return 1;
-        }
-        else if ( test.checkRedTwoInaRow( connectfour.getGrid() ) != null )
-        {
-            return 2;
-        }
-        else
-        {
-            return 4;
-        }
-    }
-
-    /**
-     * 
-     * This should return how many moves it would take the human to win, based on how many 
-     * tokens in a row they have.
-     * @return
-     */
-    public int humanMovesToWin()
-    {
-        if ( test.checkYellowThreeInaRow( connectfour.getGrid() ) != null )
-        {
-            return 1;
-        }
-        else if ( test.checkYellowTwoInaRow( connectfour.getGrid() ) != null )
-        {
-            return 2;
-        }
-        else
-        {
-            return 4;
-        }
-    }
-
-    /**
-     * 
-     * This returns the amount that the computer will bid for their next move. This is based on 
-     * a variety of factors but mostly on the dominant strategy of nx+1
-     * @return
-     */
-    public int bidAmount()
-    {
-//        movesPlayed++;
-//        if ( ( computerMovesToWin() == 1 ) && ( computerPlayerCoins() > humanPlayerCoins() ) )
+//
+//    /**
+//     * 
+//     *This method is called to get the correct number of humanPlayerCoins. We need to constantly 
+//     *call it to make sure that the humanPlayerCoins we are using is correct.
+//     * @return
+//     */
+//    public static int humanPlayerCoins()
+//    {
+//        humanPlayerCoins = Logic.getYellowCoins();
+//        return humanPlayerCoins;
+//    }
+//
+//    /**
+//     * 
+//     * Gets the amount of coins computerPlayer has.
+//     * @return
+//     */
+//    public static int computerPlayerCoins()
+//    {
+//        computerPlayerCoins = Logic.getRedCoins();
+//        return computerPlayerCoins;
+//    }
+//    
+//    public void dropRedPatternAI( String[][] grid )
+//    {
+//        int changeToOdd = checkTwoYellowVertical(grid);
+//        int count = 0;
+//        
+//        for(int row = 5; row> 0; row--)
 //        {
-//            return humanPlayerCoins();
-//        }
-//        else if ( ( computerMovesToWin() == 2 )
-//            && ( computerPlayerCoins() > ( ( 2 * humanPlayerCoins() ) + 1 ) ) )
-//        {
-//            return humanPlayerCoins();
-//        }
-//        else if ( ( computerMovesToWin() == 3 )
-//            && ( computerPlayerCoins() > ( ( 3 * humanPlayerCoins() ) + 1 ) ) )
-//        {
-//            return humanPlayerCoins();
-//        }
-//        else if ( ( computerMovesToWin() == 4 )
-//            && ( computerPlayerCoins() > ( ( 4 * humanPlayerCoins() ) + 1 ) ) )
-//        {
-//            return humanPlayerCoins();
-//        }
-//        else if ( ( humanMovesToWin == 1 ) ) // if the human is one step from winning stop him
-//        {
-//            if ( computerPlayerCoins() > humanPlayerCoins() )
+//            if(grid[row][changeToOdd] == " ")
 //            {
-//                bidAmount = humanPlayerCoins();
-//            }
-//            else
-//            {
-//                bidAmount = computerPlayerCoins() - getPreviousHumanMoves(movesPlayed);
+//                grid[row][changeToOdd] = "R";
+//                break;
 //            }
 //        }
-//        if ( humanMovesToWin == 2 )//makes sure that human cannot barely beat the computerBid every time
+//        
+//       
+//    }
+//    
+//    public int checkTwoYellowVertical(String[][] grid)
+//    {
+//        for ( int row = 1; row < 15; row += 2 )
 //        {
-//            if ( ( getPreviousHumanMoves( movesPlayed )
-//                - getPreviousHumanMoves( movesPlayed - 1 ) ) < 5 )
+//            for ( int col = 0; col <= 2; col++ )
 //            {
-//                bidAmount = getPreviousHumanMoves( movesPlayed ) + 1;
+//                if ( ( grid[col][row] == "Y" ) && ( grid[col + 1][row] == "Y" )
+//                    && ( ( grid[col + 2][row] == " ")))
+//                    return col + 2;
 //            }
 //        }
-
-            return getPreviousHumanMoves(movesPlayed);
-
-    }
+//        
+//        return 5;
+//    }
+//    
+//    public int checkTwoYellowHorizontal(String[][] grid)
+//    {
+//        for ( int row = 0; row < 6; row++ )
+//        {
+//            for ( int col = 0; col < 7; col += 2 )
+//            {
+//                 if ((grid[row][col + 1] != " ") && (grid[row][col + 3] != " ")
+//                         && (grid[row][col + 5] == " ")
+//                    && ( ( grid[row][col + 1] == "Y")) && (grid[row][col + 3] == "Y" ))
+//                    return col + 5;
+//            }
+//        }
+//        
+//        return 8;
+//    }
+//    
+//    public int checkTwoLeftToRightDiagonal(String[][] grid)
+//    {
+//        for ( int row = 0; row < 3; row++ )
+//        {
+//            for ( int col = 1; col < 9; col += 2 )
+//            {
+//                 if ((grid[row][col] != " ") && (grid[row + 1][col + 2] != " ")
+//                         && (grid[row + 2][col + 4] == " ")
+//                    && ( ( grid[row][col] == "Y")) && (grid[row + 1][col + 2] == "Y"))
+//                    return col + 4;
+//            }
+//        }
+//        return 8;
+//    }
+//    
+//    public int checkTwoRightToLeftDiagonal(String[][] grid)
+//    {
+//        for ( int row = 0; row < 3; row++ )
+//        {
+//            for ( int col = 7; col < 15; col += 2 )
+//            {
+//                 if ((grid[row][col] != " ") && (grid[row + 1][col - 2] != " ")
+//                         && (grid[row + 2][col - 4] == " ")
+//                         && ((grid[row][col] == "Y")) && (grid[row + 1][col - 2] == "Y"))
+//   
+//                    return col - 4;
+//            }
+//        }
+//        return 8;
+//    }
+//
+//
+//    /**
+//     * 
+//     * This method should return the correct column that the computer should
+//     * play at
+//     * 
+//     * @return
+////     */
+////    public String computerMove()
+////    {
+////        if ( test.checkYellowThreeInaRow( connectfour.getGrid() ) != null )
+////        {
+////            return test.checkYellowThreeInaRow( connectfour.getGrid() );
+////        }
+////        else if ( test.checkYellowTwoInaRow( connectfour.getGrid() ) != null )
+////        {
+////            return test.checkYellowTwoInaRow( connectfour.getGrid() );
+////        }
+////        else if ( movesPlayed == 0 )
+////        {
+////            return connectfour.getMiddlePosition();
+////        }
+////        else
+////        {
+////            return null;
+////        }
+////    }
+//
+//    /**
+//     * 
+//     * how many moves to win is based on how many we have in a row right now.
+//     * @return
+//     */
+////    public int computerMovesToWin()
+////    {
+////        if ( test.checkRedThreeInaRow( connectfour.getGrid() ) != null )
+////        {
+////            return 1;
+////        }
+////        else if ( test.checkRedTwoInaRow( connectfour.getGrid() ) != null )
+////        {
+////            return 2;
+////        }
+////        else
+////        {
+////            return 4;
+////        }
+////    }
+////    
+//
+//    /**
+//     * 
+//     * This should return how many moves it would take the human to win, based on how many 
+//     * tokens in a row they have.
+//     * @return
+//     */
+////    public int humanMovesToWin()
+////    {
+////        if ( test.checkYellowThreeInaRow( connectfour.getGrid() ) != null )
+////        {
+////            return 1;
+////        }
+////        else if ( test.checkYellowTwoInaRow( connectfour.getGrid() ) != null )
+////        {
+////            return 2;
+////        }
+////        else
+////        {
+////            return 4;
+////        }
+////    }
+//
+//    /**
+//     * 
+//     * This returns the amount that the computer will bid for their next move. This is based on 
+//     * a variety of factors but mostly on the dominant strategy of nx+1
+//     * @return
+//     */
+//    public int bidAmount()
+//    {
+////        movesPlayed++;
+////        if ( ( computerMovesToWin() == 1 ) && ( computerPlayerCoins() > humanPlayerCoins() ) )
+////        {
+////            return humanPlayerCoins();
+////        }
+////        else if ( ( computerMovesToWin() == 2 )
+////            && ( computerPlayerCoins() > ( ( 2 * humanPlayerCoins() ) + 1 ) ) )
+////        {
+////            return humanPlayerCoins();
+////        }
+////        else if ( ( computerMovesToWin() == 3 )
+////            && ( computerPlayerCoins() > ( ( 3 * humanPlayerCoins() ) + 1 ) ) )
+////        {
+////            return humanPlayerCoins();
+////        }
+////        else if ( ( computerMovesToWin() == 4 )
+////            && ( computerPlayerCoins() > ( ( 4 * humanPlayerCoins() ) + 1 ) ) )
+////        {
+////            return humanPlayerCoins();
+////        }
+////        else if ( ( humanMovesToWin == 1 ) ) // if the human is one step from winning stop him
+////        {
+////            if ( computerPlayerCoins() > humanPlayerCoins() )
+////            {
+////                bidAmount = humanPlayerCoins();
+////            }
+////            else
+////            {
+////                bidAmount = computerPlayerCoins() - getPreviousHumanMoves(movesPlayed);
+////            }
+////        }
+////        if ( humanMovesToWin == 2 )//makes sure that human cannot barely beat the computerBid every time
+////        {
+////            if ( ( getPreviousHumanMoves( movesPlayed )
+////                - getPreviousHumanMoves( movesPlayed - 1 ) ) < 5 )
+////            {
+////                bidAmount = getPreviousHumanMoves( movesPlayed ) + 1;
+////            }
+////        }
+//            return getPreviousHumanMoves(movesPlayed);
+//
+//    }
 
 }
